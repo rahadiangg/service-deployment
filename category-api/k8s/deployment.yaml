@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: category-api
+spec:
+  revisionHistoryLimit: 3
+  replicas: 3
+  selector:
+    matchLabels:
+      app: category-api-app
+  template:
+    metadata:
+      labels:
+        app: category-api-app
+    spec:
+      nodeSelector:
+          cce.cloud.com/cce-nodepool: cce-demo-nodepool-app
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - category-api-app
+              topologyKey: topology.kubernetes.io/zone
+            weight: 100
+      containers:
+        - name: category-api
+          image: swr.ap-southeast-3.myhuaweicloud.com/cce-demo/category-api:be4eb99be1248704f6b09f0eb39541bd0ce3034d
+          ports:
+            - containerPort: 8080
+          env:
+            - name: APP_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: category-api-secret
+                  key: APP_PORT
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: category-api-secret
+                  key: DB_HOST
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: category-api-secret
+                  key: DB_PASS
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: category-api-secret
+                  key: DB_NAME
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: category-api-secret
+                  key: DB_USER
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "128m"
+      imagePullSecrets:
+        - name: huawei-pull-secret
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: category-api-service
+spec:
+  type: ClusterIP
+  selector:
+    app: category-api-app
+  ports:
+  - port: 8080
+    targetPort: 8080
