@@ -29,7 +29,7 @@ spec:
             weight: 100
       containers:
         - name: category-api
-          image: swr.ap-southeast-3.myhuaweicloud.com/cce-demo/category-api:be4eb99be1248704f6b09f0eb39541bd0ce3034d
+          image: swr.ap-southeast-3.myhuaweicloud.com/cce-demo/category-api:72811fc
           ports:
             - containerPort: 8080
           env:
