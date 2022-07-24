@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: express-crud
+spec:
+  revisionHistoryLimit: 3
+  replicas: 3
+  selector:
+    matchLabels:
+      app: express-crud-app
+  template:
+    metadata:
+      labels:
+        app: express-crud-app
+    spec:
+      nodeSelector:
+          cce.cloud.com/cce-nodepool: cce-demo-nodepool-app
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - express-crud-app
+              topologyKey: topology.kubernetes.io/zone
+            weight: 100
+      containers:
+        - name: express-crud
+          image: swr.ap-southeast-3.myhuaweicloud.com/cce-demo/express-crud:72811fc
+          ports:
+            - containerPort: 3000
+          env:
+            - name: APP_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: express-crud-secret
+                  key: APP_PORT
+            - name: BACKEND_URI
+              valueFrom:
+                secretKeyRef:
+                  name: express-crud-secret
+                  key: BACKEND_URI
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "128m"
+      imagePullSecrets:
+        - name: huawei-pull-secret
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: express-crud-service
+spec:
+  type: NodePort
+  selector:
+    app: express-crud-app
+  ports:
+  - port: 3000
+    targetPort: 3000
