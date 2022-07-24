@@ -2,7 +2,6 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress 
 metadata: 
   name: ingress-express-crud
-  namespace: observability
   annotations: 
     kubernetes.io/elb.class: union # can be union or performance
     kubernetes.io/elb.port: '80' # can be 80 or 443
