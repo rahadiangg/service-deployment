@@ -11,7 +11,7 @@ spec:
     kind: Deployment
     name: express-crud
   minReplicas: 3
-  maxReplicas: 10
+  maxReplicas: 100
   metrics:
   - type: Resource
     resource:
