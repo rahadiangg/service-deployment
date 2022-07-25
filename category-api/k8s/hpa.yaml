@@ -1,7 +1,7 @@
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: hpa-express-crud
+  name: hpa-category-api
   annotations:
     extendedhpa.metrics: '[{"type":"Resource","name":"cpu","targetType":"Utilization","targetRange":{"low":"30","high":"70"}}]'
     extendedhpa.option: '{"downscaleWindow":"3m","upscaleWindow":"1m"}'
@@ -9,7 +9,7 @@ spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: express-crud
+    name: category-api
   minReplicas: 3
   maxReplicas: 100
   metrics:
