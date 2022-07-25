@@ -2,6 +2,9 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: hpa-express-crud
+  annotations:
+    extendedhpa.metrics: '[{"type":"Resource","name":"cpu","targetType":"Utilization","targetRange":{"low":"30","high":"70"}},{"type":"Resource","name":"memory","targetType":"Utilization","targetRange":{"low":"30","high":"70"}}]'
+    extendedhpa.option: '{"downscaleWindow":"1m","upscaleWindow":"1m"}'
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
@@ -15,10 +18,10 @@ spec:
       name: cpu
       target:
         type: Utilization
-        averageUtilization: 60
+        averageUtilization: 50
   - type: Resource
     resource:
       name: memory
       target:
         type: Utilization
-        averageUtilization: 75
+        averageUtilization: 50
