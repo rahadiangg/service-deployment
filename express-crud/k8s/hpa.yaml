@@ -1,4 +1,4 @@
-apiVersion: autoscaling/v2
+apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
   name: hpa-express-crud
@@ -9,19 +9,15 @@ spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: express-crud-app
+    name: express-crud
   minReplicas: 3
   maxReplicas: 10
   metrics:
   - type: Resource
     resource:
       name: cpu
-      target:
-        type: Utilization
-        averageUtilization: 50
+      targetAverageUtilization: 50
   - type: Resource
     resource:
       name: memory
-      target:
-        type: Utilization
-        averageUtilization: 50
+      targetAverageUtilization: 50
