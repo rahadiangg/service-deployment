@@ -29,7 +29,7 @@ spec:
             weight: 100
       containers:
         - name: express-crud
-          image: swr.ap-southeast-3.myhuaweicloud.com/cce-demo/express-crud:65b6bf3
+          image: swr.ap-southeast-3.myhuaweicloud.com/cce-demo/express-crud:c48cfdc
           ports:
             - containerPort: 3000
           env:
