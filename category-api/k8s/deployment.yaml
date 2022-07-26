@@ -14,7 +14,7 @@ spec:
         app: category-api-app
     spec:
       nodeSelector:
-          cce.cloud.com/cce-nodepool: cce-demo-nodepool-app
+          cce.cloud.com/cce-nodepool: cce-demo-nodepool-app-new
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
